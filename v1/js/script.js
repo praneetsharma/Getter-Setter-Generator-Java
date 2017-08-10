@@ -34,7 +34,13 @@ $(document).ready(function(){
                 return acc;
             }, []);
 
-            alert(stmts);
+            // remove semi-colon from end of the statement
+            stmts = stmts.reduce((acc, cur, idx, array) => {
+                acc.push(cur.substring(0, cur.length - 1));
+                return acc;
+            }, []);
+
+            $("#output-box").html(generateGetterMethod(stmts[0]));
         }
     });
 
