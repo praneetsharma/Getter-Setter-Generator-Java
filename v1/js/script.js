@@ -40,7 +40,7 @@ $(document).ready(function(){
                 return acc;
             }, []);
 
-            $("#output-box").html(generateGetterMethod(stmts[0]));
+            $("#output-box").html(generateGetterMethod(stmts[0]) + "<br />" + generateSetterMethod(stmts[0]));
         }
     });
 
@@ -55,7 +55,7 @@ $(document).ready(function(){
 
     function resetOutputBox() {
         $("#output-box").html("");
-        $("output-box").css('color', 'black');
+        $("#output-box").css('color', 'black');
     }
 
     function isEmpty(stmt) {
