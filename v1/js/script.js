@@ -23,9 +23,14 @@ $(document).ready(function(){
             }, []);
 
             // Validate each statement separately
-            stmts.forEach((cur, idx, arr) => {
-                validate(cur, idx);
-            });
+            retCode = stmts.reduce((acc, cur, idx, arr) => {
+                ret = validate(cur, idx);
+                if (!ret)
+                    acc = acc + 1;
+                return acc;
+            }, 0);
+            if (retCode > 0)
+                return;
 
             // remove empty statements
             stmts = stmts.reduce((acc, cur, idx, array) => {
@@ -40,7 +45,9 @@ $(document).ready(function(){
                 return acc;
             }, []);
 
-            $("#output-box").html(generateGetterMethod(stmts[0]) + "<br />" + generateSetterMethod(stmts[0]));
+            $("#output-box").html(generate(stmts));
+
+            //$("#output-box").html(generateGetterMethod(stmts[0]) + "<br />" + generateSetterMethod(stmts[0]));-->
         }
     });
 

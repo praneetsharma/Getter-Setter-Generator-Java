@@ -24,6 +24,18 @@ const JAVA_TYPES = {
     void: "void"
 };
 
+
+function generate(stmts) {
+    var htmlTxt = stmts.reduce((acc, cur, idx, arr) => {
+        acc = acc.concat(
+            generateGetterMethod(cur) + NEWLINE +
+            generateSetterMethod(cur) + NEWLINE
+        );
+        return acc;
+    }, "");
+    return htmlTxt;
+}
+
 function generateGetterMethod(stmt) {
     return generateGetterHeader(stmt) + NEWLINE +
            generateGetterBody(stmt) + NEWLINE +
@@ -81,13 +93,30 @@ function getTypeFromAttribute(stmt) {
 }
 
 function getStmtPartsLen(stmt) {
-    return stmt.split(SPACE).length;
+    return getStmtParts(stmt).length;
 }
 
+/**
+ * Splits the statement into parts based on SPACE but only
+ * returns those parts which are non-empty
+ * @param {string} stmt 
+ */
 function getStmtParts(stmt) {
-    return stmt.split(SPACE);
+    var parts = stmt.split(SPACE);
+    parts = parts.reduce((acc, cur, idx, arr) => {
+        if (! isNullOrEmpty(cur))
+            acc.push(cur);
+        return acc;
+    }, []);
+    return parts;
 }
 
+
+function isNullOrEmpty(stmt) {
+    if (stmt == null || stmt.length === 0)
+        return true;
+    return false;
+}
 
 function generateSetterMethod(stmt) {
     return generateSetterHeader(stmt) + NEWLINE +
