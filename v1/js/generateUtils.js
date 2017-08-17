@@ -1,7 +1,7 @@
-const TAB = "&nbsp;&nbsp;&nbsp;&nbsp;";
+const TAB = "\t";//&nbsp;&nbsp;&nbsp;&nbsp;";
 const SPACE = " ";
 const SEMI_COLON = ";";
-const NEWLINE = "<br />";
+const NEWLINE = "\r\n";//<br />";
 const DOT = ".";
 const EQUALS = "=";
 

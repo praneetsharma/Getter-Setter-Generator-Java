@@ -29,6 +29,8 @@ $(document).ready(function(){
                     acc = acc + 1;
                 return acc;
             }, 0);
+            // If retCode is greater than 0, it means one or more 
+            // statements are invalid.
             if (retCode > 0)
                 return;
 
@@ -46,14 +48,16 @@ $(document).ready(function(){
             }, []);
 
             $("#output-box").html(generate(stmts));
-
-            //$("#output-box").html(generateGetterMethod(stmts[0]) + "<br />" + generateSetterMethod(stmts[0]));-->
         }
     });
 
     $("#clear-btn").click(function(){
         reset();
     });
+
+    /*$("#copy-clipboard-btn").click(function(){
+        copyToClipboard();
+    });*/
 
     function reset() {
         resetOutputBox();
@@ -97,12 +101,19 @@ $(document).ready(function(){
         var txt = $("#output-box").html();
         if (isEmpty(txt)) {
             $("#output-box").css("color", "red");
-            txt = "Generation failed due to the following errors:<br />";
-            txt = txt.concat("&nbsp; &nbsp; > &nbsp;").concat(line).concat("<br />");
+            txt = "Generation failed due to the following errors:" + NEWLINE;            
         } else {
-            txt = txt.concat("&nbsp; &nbsp; > &nbsp;").concat(line).concat("<br />");
         }
+        txt = txt.concat("  > ").concat(line).concat(NEWLINE);
         $("#output-box").html(txt);
+    }
+
+    function copyToClipboard() {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($("#output-box").text()).select();
+        document.execCommand("copy");
+        $temp.remove();
     }
 
 });

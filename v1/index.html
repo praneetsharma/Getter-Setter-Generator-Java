@@ -7,6 +7,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
         <script src="./js/jquery-linedtextarea.js"></script>
         <script src="./js/generateUtils.js"></script>
         <script src="./js/script.js"></script>
@@ -35,14 +36,14 @@
                     </div>
                 </div>
 
-                <!--<hr />-->
-
                 <!-- Generated Output -->
                 <div class="col-md-6">
                         <h4>Generated getters and setters:</h4>
-                    <div class="well" id="output-box">
+                    <div wrap="on">
+                        <textarea readonly id="output-box" class="lined" rows="18" wrap="on"></textarea>
                     </div>
-                    <div class="btn btn-primary" id="copy-clipboard-btn">
+                    <br />
+                    <div class="btn btn-primary" id="copy-clipboard-btn" data-clipboard-target="#output-box">
                         Copy to clipboard
                     </div>
                 </div>
