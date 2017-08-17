@@ -63,33 +63,53 @@ function generateGetterFooter(stmt) {
 }
 
 function getVarName(stmt) {
+    var stmtSplits = getStmtParts(stmt);
     if (getStmtPartsLen(stmt) === 3) {
-        var stmtSplits = getStmtParts(stmt);
         return stmtSplits[2];
+    } else if (getStmtPartsLen(stmt) === 2) {
+        return stmtSplits[1];
     }
 }
 
+/**
+ * 
+ * @param {string} stmt 
+ */
 function getGetterMethodName(stmt) {
+    var getterPrefix = "get";
+    if (getGetterReturnType(stmt) === JAVA_TYPES.boolean)
+        getterPrefix = "is";
+
+    var idxForMethodName = -1;
     if (getStmtPartsLen(stmt) === 3) {
-        var getterPrefix = "get";
-        if (getGetterReturnType(stmt) === JAVA_TYPES.boolean)
-            getterPrefix = "is";
-
-        var stmtSplits = getStmtParts(stmt);
-
-        return getterPrefix + stmtSplits[2].substring(0, 1).toUpperCase() + stmtSplits[2].substring(1);
+        idxForMethodName = 2;
+    } else if (getStmtPartsLen(stmt) === 2) {
+        idxForMethodName = 1;
     }
+
+    var stmtSplits = getStmtParts(stmt);
+    return getterPrefix + 
+        stmtSplits[idxForMethodName].substring(0, 1).toUpperCase() + stmtSplits[idxForMethodName].substring(1);
 }
 
 function getGetterReturnType(stmt) {
     return getTypeFromAttribute(stmt);
 }
 
+/**
+ * 
+ * @param {string} stmt 
+ */
 function getTypeFromAttribute(stmt) {
-    if (getStmtPartsLen(stmt) === 3) {
-        var stmtSplits = getStmtParts(stmt);
-        return stmtSplits[1];
-    }
+    var typePos = -1;
+
+    if (getStmtPartsLen(stmt) === 3)
+        typePos = 1;
+    else if (getStmtPartsLen(stmt) === 2)
+        typePos = 0;
+
+    var stmtSplits = getStmtParts(stmt);
+    return stmtSplits[typePos];
 }
 
 function getStmtPartsLen(stmt) {
@@ -147,11 +167,16 @@ function generateSetterFooter(stmt) {
 }
 
 function getSetterMethodName(stmt) {
-    if (getStmtPartsLen(stmt) === 3) {
-        var setterPrefix = "set";
-        var stmtSplits = getStmtParts(stmt);
-        return setterPrefix + stmtSplits[2].substring(0, 1).toUpperCase() + stmtSplits[2].substring(1);
-    }
+    var setterPrefix = "set";
+    var stmtSplits = getStmtParts(stmt);
+    var methodPos = -1
+    
+    if (getStmtPartsLen(stmt) === 3)
+        methodPos = 2;
+    else if (getStmtPartsLen(stmt) === 2)
+        methodPos = 1;
+
+    return setterPrefix + stmtSplits[methodPos].substring(0, 1).toUpperCase() + stmtSplits[methodPos].substring(1);
 }
 
 function getSetterParamType(stmt) {
