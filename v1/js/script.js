@@ -1,7 +1,5 @@
 $(document).ready(function(){
 
-    var ACCESS_MODIFIERS = ["public", "private", "protected"];
-
     // to show line numbers in the text box
     $(".lined").linedtextarea();
 
@@ -22,16 +20,8 @@ $(document).ready(function(){
                 return acc;
             }, []);
 
-            // Validate each statement separately
-            retCode = stmts.reduce((acc, cur, idx, arr) => {
-                ret = validate(cur, idx);
-                if (!ret)
-                    acc = acc + 1;
-                return acc;
-            }, 0);
-            // If retCode is greater than 0, it means one or more 
-            // statements are invalid.
-            if (retCode > 0)
+            // Validate the statements entered by the user
+            if (! validate(stmts, logError))
                 return;
 
             // remove empty statements
@@ -47,6 +37,7 @@ $(document).ready(function(){
                 return acc;
             }, []);
 
+            // Generation of getter and setter methods
             $("#output-box").html(generate(stmts));
         }
     });
@@ -77,24 +68,10 @@ $(document).ready(function(){
 
     function cleanup(line) {
         if (isEmpty(line)) return line;
-
         var line_ = line; // to make sure this function is pure
-
         // Remove spaces from front and end
         line_ = line_.trim();
-
         return line_;
-    }
-
-    function validate(line, idx) {
-        if (isEmpty(line)) return true;
-
-        // check if the statement ends with semi-colon
-        if (line.charAt(line.length - 1) !== ';') {
-            logError("Statement [" + line + "] at line number ["+ (idx + 1) +"] doesn't have semi-colon at the end.");
-            return false;
-        }
-        return true;
     }
 
     function logError(line) {

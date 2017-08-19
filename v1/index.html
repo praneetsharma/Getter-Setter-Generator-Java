@@ -10,6 +10,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
         <script src="./js/jquery-linedtextarea.js"></script>
         <script src="./js/generateUtils.js"></script>
+        <script src="./js/validator.js"></script>
         <script src="./js/script.js"></script>
 
         <title> Getter-Setter Generator for Java</title>
@@ -19,14 +20,12 @@
         <div class="page-header text-center">
             <h3>Getter-Setter Generator for Java</h3>
         </div>
-        <div class="container">
-            
-
+        <div class="container body-container">
             <div class="row">
                 <!-- Read Input -->            
                 <div class="col-md-6">
                     <h4>Enter Class member variable declarations, each on a separate line:</h4>
-                    <textarea class="form-control lined" rows="17" id="attr-box"></textarea>
+                    <textarea class="lined" id="attr-box"></textarea>
                     <br />
                     <div class="btn btn-success" id="generate-btn">
                         Generate
@@ -39,9 +38,9 @@
                 <!-- Generated Output -->
                 <div class="col-md-6">
                         <h4>Generated getters and setters:</h4>
-                    <div wrap="on">
-                        <textarea readonly id="output-box" class="lined" rows="18" wrap="on"></textarea>
-                    </div>
+                    <!--<div wrap="on">-->
+                        <textarea readonly id="output-box" class="lined"></textarea>
+                    <!--</div>-->
                     <br />
                     <div class="btn btn-primary" id="copy-clipboard-btn" data-clipboard-target="#output-box">
                         Copy to clipboard

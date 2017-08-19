@@ -21,8 +21,27 @@ const ACCESS_MODIFIERS = {
 
 const JAVA_TYPES = {
     boolean: "boolean",
-    void: "void"
+    void: "void",
+    int: "int",
+    float: "float",
+    double: "double",
+    long: "long",
+    short: "short",
+    byte: "byte",
+    char: "char",
+    String: "String"
 };
+
+const WRAPPER_JAVA_TYPES = {
+    Boolean: "Boolean",
+    Integer: "Integer",
+    Float: "Float",
+    Double: "Double",
+    Long: "Long",
+    Short: "Short",
+    Byte: "Byte",
+    Character: "Character"
+}
 
 
 function generate(stmts) {
@@ -77,7 +96,7 @@ function getVarName(stmt) {
  */
 function getGetterMethodName(stmt) {
     var getterPrefix = "get";
-    if (getGetterReturnType(stmt) === JAVA_TYPES.boolean)
+    if (getGetterReturnType(stmt).toLowerCase() === JAVA_TYPES.boolean)
         getterPrefix = "is";
 
     var idxForMethodName = -1;
