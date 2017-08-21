@@ -50,9 +50,9 @@ $(document).ready(function(){
         reset();
     });
 
-    /*$("#copy-clipboard-btn").click(function(){
+    $("#copy-clipboard-btn").click(function(){
         copyToClipboard();
-    });*/
+    });
 
     function reset() {
         resetOutputBox();
@@ -90,10 +90,22 @@ $(document).ready(function(){
     }
 
     function copyToClipboard() {
-        var $temp = $("<input>");
+        // Create a temporary hidden text field
+        // and add it to the body
+        var $temp = $("<textarea>");
         $("body").append($temp);
-        $temp.val($("#output-box").text()).select();
+
+        // Get the content you want to copy to clipboard
+        var dat = $("#output-box").html();
+
+        // Select the content after setting it
+        // in the temporary text field
+        $temp.val(dat).select();
+
+        // execute th copy command
         document.execCommand("copy");
+
+        // Remove temporary hidden text field
         $temp.remove();
     }
 
