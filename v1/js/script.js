@@ -3,6 +3,10 @@ $(document).ready(function(){
     // to show line numbers in the text box
     $(".lined").linedtextarea();
 
+    // When the page loads, cursor should be set
+    // in the input textbox
+    $("#attr-box").focus();
+
     $("#generate-btn").click(function(){
         // reset output box
         resetOutputBox();
