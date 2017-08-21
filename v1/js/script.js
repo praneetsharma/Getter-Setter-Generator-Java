@@ -7,7 +7,7 @@ $(document).ready(function(){
     // in the input textbox
     $("#attr-box").focus();
 
-    $("#generate-btn").click(function(){
+    function generateGetterSetter() {
         // reset output box
         resetOutputBox();
 
@@ -43,6 +43,16 @@ $(document).ready(function(){
 
             // Generation of getter and setter methods
             $("#output-box").html(generate(stmts));
+        }
+    }
+
+    $("#generate-btn").click(function(){
+        generateGetterSetter();
+    });
+
+    $("#attr-box").keydown(function(event){
+        if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
+            generateGetterSetter();
         }
     });
 
