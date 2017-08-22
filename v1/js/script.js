@@ -64,6 +64,18 @@ $(document).ready(function(){
         copyToClipboard();
     });
 
+    $("input[name='indent-radio']").change(function(){
+        if ($("#indent-radio-1").prop("checked")) {
+            INDENTATION = "\t";
+        }
+        if ($("#indent-radio-2").prop("checked")) {
+            INDENTATION = "&nbsp;&nbsp;";
+        }
+        if ($("#indent-radio-3").prop("checked")) {
+            INDENTATION = "&nbsp;&nbsp;&nbsp;&nbsp;";
+        }
+    });
+
     function reset() {
         resetOutputBox();
         $("#attr-box").val("");
@@ -107,6 +119,8 @@ $(document).ready(function(){
 
         // Get the content you want to copy to clipboard
         var dat = $("#output-box").html();
+        // Replacing code of space with actual space
+        dat = dat.replace(/&nbsp;/g, " ");
 
         // Select the content after setting it
         // in the temporary text field

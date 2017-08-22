@@ -33,14 +33,25 @@
                     <div class="btn btn-info" id="clear-btn">
                         Clear
                     </div>
+                    <br /><br /> 
+                    <form>
+                        <b>Indendation:</b> &nbsp;
+                        <label class="radio-inline">
+                            <input type="radio" name="indent-radio" id="indent-radio-1" checked>Tab
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="indent-radio" id="indent-radio-2">Two-spaced
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="indent-radio" id="indent-radio-3">Four-spaced
+                        </label>                        
+                    </form>
                 </div>
 
                 <!-- Generated Output -->
                 <div class="col-md-6">
-                        <h4>Generated getters and setters:</h4>
-                    <!--<div wrap="on">-->
-                        <textarea readonly id="output-box" class="lined"></textarea>
-                    <!--</div>-->
+                    <h4>Generated getters and setters:</h4>
+                    <textarea readonly id="output-box" class="lined"></textarea>
                     <br />
                     <div class="btn btn-primary" id="copy-clipboard-btn" data-clipboard-target="#output-box">
                         Copy to clipboard

@@ -1,7 +1,7 @@
-const TAB = "\t";//&nbsp;&nbsp;&nbsp;&nbsp;";
+var INDENTATION = "\t";
 const SPACE = " ";
 const SEMI_COLON = ";";
-const NEWLINE = "\r\n";//<br />";
+const NEWLINE = "\n";
 const DOT = ".";
 const EQUALS = "=";
 
@@ -46,10 +46,15 @@ const WRAPPER_JAVA_TYPES = {
 
 function generate(stmts) {
     var htmlTxt = stmts.reduce((acc, cur, idx, arr) => {
-        acc = acc.concat(
+        // Don't put newline at the end of last generated getter-setter
+        if (idx == arr.length - 1)
+            acc = acc.concat(
             generateGetterMethod(cur) + NEWLINE +
-            generateSetterMethod(cur) + NEWLINE
-        );
+            generateSetterMethod(cur));
+        else
+            acc = acc.concat(
+            generateGetterMethod(cur) + NEWLINE +
+            generateSetterMethod(cur) + NEWLINE);
         return acc;
     }, "");
     return htmlTxt;
@@ -71,7 +76,7 @@ function generateGetterHeader(stmt) {
 }
 
 function generateGetterBody(stmt) {
-    return TAB +
+    return INDENTATION +
            RETURN_STMT + SPACE +
            THIS_STMT + DOT + getVarName(stmt) + SEMI_COLON
            ; 
@@ -107,8 +112,11 @@ function getGetterMethodName(stmt) {
     }
 
     var stmtSplits = getStmtParts(stmt);
+
+    // Building the method name in camel-case
     return getterPrefix + 
-        stmtSplits[idxForMethodName].substring(0, 1).toUpperCase() + stmtSplits[idxForMethodName].substring(1);
+        stmtSplits[idxForMethodName].substring(0, 1).toUpperCase() + 
+        stmtSplits[idxForMethodName].substring(1);
 }
 
 function getGetterReturnType(stmt) {
@@ -175,7 +183,7 @@ function generateSetterHeader(stmt) {
 }
 
 function generateSetterBody(stmt) {
-    return TAB +
+    return INDENTATION +
            THIS_STMT + DOT + getVarName(stmt) + SPACE +
            EQUALS + SPACE + getVarName(stmt) + SEMI_COLON
            ; 

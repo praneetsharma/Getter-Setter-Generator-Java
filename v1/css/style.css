@@ -1,7 +1,6 @@
 #output-box {
     width: 100%;
     resize: none;
-    padding: 5px 5px 5px 5px;
     word-wrap: break-word !important;
 }
 
