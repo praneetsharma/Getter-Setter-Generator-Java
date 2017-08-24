@@ -1,15 +1,47 @@
 /**
  * 
- * @param {Array<string>} statements 
+ * @param {Array<String>} stmts
+ * @param {Object<String, Integer>} stmtLineMap 
  * @param {function} logger 
  */
-function validate(statements, logger) {
-    retCode = statements.reduce((acc, cur, idx, arr) => {
-        if (! isNullOrEmpty(cur))
-            acc = acc + (validateStatement(cur, idx, logger) ? 0 : 1);
+function validate(stmts, logger) {
+
+    var retCode = 0;
+    var isComment = false;
+    var retCode = stmts.reduce((acc, cur, idx, arr) => {
+        var stmt = cur;
+
+        if (isNullOrEmpty(stmt)) {
+            return acc;
+        }
+        
+        // If the statement starts with a comment, skip it
+        if (stmt.startsWith(MULTILINE_COMMENT_START) || 
+            stmt.startsWith(JAVADOC_COMMENT_START)) {
+            isComment = true;
+            return acc;
+        }
+        if (isComment && stmt.startsWith(MULTILINE_COMMENT_END)) {
+            isComment = false; // multi-line comment has ended
+            return acc;
+        }
+        // End of multi-line comment is yet to be reached, hence skip the statement
+        if (isComment) {
+            return acc;
+        }
+        if (stmt.startsWith(COMMENT_START)) {
+            return acc;
+        }
+
+        // If the comment is somewhere in between and not at the beginning
+        // of the statement, remove the comment section before validating it.
+        if (stmt.includes(COMMENT_START)) {
+            stmt = stmt.split("//")[0];
+        }
+
+        acc = acc + (validateStatement(stmt, idx, logger) ? 0 : 1);
         return acc;
     }, 0);
-
     return (retCode == 0) ? true : false;
 }
 

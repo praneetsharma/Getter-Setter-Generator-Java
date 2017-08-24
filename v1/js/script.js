@@ -17,29 +17,17 @@ $(document).ready(function(){
         if (! isEmpty(attrs)) {
             // split the text based on linefeed char
             var stmts = attrs.split("\n");
-            
-            // Perform cleanup of each statement separately
-            stmts = stmts.reduce((acc, cur, idx, arr) => {
-                acc.push(cleanup(cur));
-                return acc;
-            }, []);
 
-            // Validate the statements entered by the user
+            // Validate the statements entered by the user.
+            // Validation has to happen before clean-up so 
+            // that original line-numbers can be used for 
+            // reporting errors.
             if (! validate(stmts, logError))
                 return;
 
-            // remove empty statements
-            stmts = stmts.reduce((acc, cur, idx, array) => {
-                if (cur != null && cur.length > 0)
-                    acc.push(cur);
-                return acc;
-            }, []);
-
-            // remove semi-colon from end of the statement
-            stmts = stmts.reduce((acc, cur, idx, array) => {
-                acc.push(cur.substring(0, cur.length - 1));
-                return acc;
-            }, []);
+            // Perform clean-up of input statements which includes
+            // removal of empty lines, comments, and commas from the end.
+            stmts = cleanupStmts(stmts);
 
             // Generation of getter and setter methods
             $("#output-box").html(generate(stmts));
@@ -76,6 +64,63 @@ $(document).ready(function(){
         }
     });
 
+    /**
+     * 
+     * @param {Array<String>} stmts 
+     */
+    function cleanupStmts(stmts) {
+
+        // 1. Remove empty statements
+        // 2. Trim statements
+        stmts = stmts.reduce((acc, cur, idx, array) => {            
+            if (cur != null && cur.length > 0) { // ensure it is not empty
+                var trimmedCur = trimStmt(cur); // trim
+                acc.push(trimmedCur);
+            }
+            return acc;
+        }, []);
+
+        // Remove comment lines from contention
+        var isComment = false;
+        var stmtFinal = [];
+        for (var i = 0; i < stmts.length; i = i + 1) {
+            var stmt = stmts[i];
+
+            // If the statement starts with a comment, skip it
+            if (stmt.startsWith(MULTILINE_COMMENT_START) || 
+                stmt.startsWith(JAVADOC_COMMENT_START)) {
+                isComment = true;
+                continue;
+            }
+            if (isComment && stmt.startsWith(MULTILINE_COMMENT_END)) {
+                isComment = false; // multi-line comment has ended
+                continue;
+            }
+            // End of multi-line comment is yet to be reached, hence skip the statement
+            if (isComment) {
+                continue;
+            }
+            if (stmt.startsWith(COMMENT_START)) {
+                continue;
+            }
+
+            // If the comment is somewhere in between and not at the beginning
+            // of the statement, remove the comment section
+            if (stmt.includes(COMMENT_START)) {
+                stmt = stmt.split("//")[0];
+            }
+            stmtFinal.push(stmt);
+        }
+
+        // Remove semi-colon from the end
+        stmts = stmts.reduce((acc, cur, idx, array) => {
+            acc.push(cur.substring(0, cur.length - 1)); // remove semi-colon before pushing
+            return acc;
+        }, []);
+
+        return stmtFinal;
+    }
+
     function reset() {
         resetOutputBox();
         $("#attr-box").val("");
@@ -92,7 +137,7 @@ $(document).ready(function(){
         return false;
     }
 
-    function cleanup(line) {
+    function trimStmt(line) {
         if (isEmpty(line)) return line;
         var line_ = line; // to make sure this function is pure
         // Remove spaces from front and end

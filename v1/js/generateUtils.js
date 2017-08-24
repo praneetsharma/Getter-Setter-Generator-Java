@@ -5,6 +5,12 @@ const NEWLINE = "\n";
 const DOT = ".";
 const EQUALS = "=";
 
+const COMMENT_START = "//";
+const MULTILINE_COMMENT_START = "/*";
+const JAVADOC_COMMENT_START = "/**";
+const MULTILINE_COMMENT_END = "*/";
+const COMMENT_MID = "*";
+
 const CURLY_BRACE_START = "{";
 const CURLY_BRACE_END = "}";
 const ROUND_BRACE_START = "(";
@@ -45,6 +51,7 @@ const WRAPPER_JAVA_TYPES = {
 
 
 function generate(stmts) {
+
     var htmlTxt = stmts.reduce((acc, cur, idx, arr) => {
         // Don't put newline at the end of last generated getter-setter
         if (idx == arr.length - 1)
