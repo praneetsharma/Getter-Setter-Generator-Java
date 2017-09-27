@@ -113,7 +113,7 @@ $(document).ready(function(){
         }
 
         // Remove semi-colon from the end
-        stmts = stmts.reduce((acc, cur, idx, array) => {
+        stmtFinal = stmtFinal.reduce((acc, cur, idx, array) => {
             acc.push(cur.substring(0, cur.length - 1)); // remove semi-colon before pushing
             return acc;
         }, []);
